@@ -1,0 +1,146 @@
+<html>
+<body>
+	<center>
+	  <div>
+	    <input name="article" checked="true" type="radio" value="nyc"><label>Newyork times</label>
+	    <input name="article" type="radio" value="twitter"><label>Twitter</label>
+	  </div>
+	  <br />
+	  <br />
+	  <div>
+	    <span>Top</span>
+	    <select id="limit" value="5">
+	      <option value="5">5</option>
+	      <option value="10">10</option>
+	      <option value="15">15</option>
+	      <option value="20">20</option>
+	    </select>
+	    <span>Words</span>
+	  </div>
+	</center>
+	<br />
+	<div id="container"></div>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="data.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/heatmap.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<style type="text/css">
+	html,body, #container {
+		height: 97%;
+		width: 100%;
+	}
+</style>
+
+
+<script type="text/javascript">
+	//ToDo: Set limit here
+	var limit = 5;
+	var data = newsdata;
+	var heading = newsheading;
+	function check(data, limit) {
+		arr = []
+		for (i = 0; i < data.length; i++) {
+		    temp = data[i]
+			if(temp[0] < limit && temp[1] < limit) {
+				arr.push(data[i]);
+			}
+		}
+		return arr
+	}
+
+
+	// DATA WITH LIMIT
+	fileredData = check(data, limit)
+	filteredTopic = heading.slice(0, limit);
+
+    var chartData = Highcharts.chart('container', {
+
+        chart: {
+            type: 'heatmap'
+        },
+
+
+        title: {
+            text: 'Co occurance of words'
+        },
+
+        xAxis: {
+            categories: filteredTopic
+        },
+
+        yAxis: {
+            categories: filteredTopic,
+            title: null
+        },
+
+        colorAxis: {
+            min: 0,
+            minColor: '#FFFFFF',
+            maxColor: Highcharts.getOptions().colors[4]
+        },
+
+        legend: {
+            align: 'right',
+            layout: 'vertical',
+            margin: 0,
+            verticalAlign: 'top',
+            y: 25,
+            symbolHeight: 320
+        },
+
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> occured <br><b>' +
+                    this.point.value + '</b> with <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
+            }
+        },
+
+        series: [{
+            name: 'Sales per employee',
+            borderWidth: 1,
+            data: fileredData,
+            dataLabels: {
+                enabled: true,
+                color: 'black',
+                style: {
+                    textShadow: 'none'
+                }
+            }
+        }]
+
+    });
+jQuery('#limit').on('change',function(){
+  limit = jQuery('#limit').val();
+	chartData.series[0].setData(check(data,limit));
+	chartData.yAxis[0].setCategories(heading.slice(0, limit));
+	chartData.xAxis[0].setCategories(heading.slice(0, limit));
+})
+
+jQuery('input[name=article]').on('change',function(){
+  var selectedVal = $('input[type="radio"]:checked').val();
+  var content = "";
+  if(selectedVal == "nyc"){
+    content= "New York Times word Co occurance";
+    data = newsdata;
+		heading = newsheading;
+  }else{
+    content= "Twitter word Co occurance";
+		data = twitterdata;
+    heading = twitterheading;
+  }
+  chartData.series[0].setData(check(data,limit));
+	chartData.yAxis[0].setCategories(heading.slice(0, limit));
+	chartData.xAxis[0].setCategories(heading.slice(0, limit));
+  chartData.setTitle({text:content});
+})
+</script>
+
+<style type="text/css">
+	#container {
+	    margin: 1em auto;
+	}
+</style>

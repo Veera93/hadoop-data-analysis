@@ -1,0 +1,84 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+<script src = "data.js" ></script>
+<body>
+<center>
+  <div>
+    <input name="article" checked="true" type="radio" value="nyc"><label>Newyork times</label>
+    <input name="article" type="radio" value="twitter"><label>Twitter</label>
+  </div>
+  <br />
+  <br />
+  <div>
+    <span>Top</span>
+    <select id="limit" value="10">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+      <option value="50">50</option>
+    </select>
+    <span>Words</span>
+  </div>
+</center>
+<br />
+<br />
+  <div id="container" style="width:100%; height:500px;border:1px solid"></div>
+
+</body>
+</html>
+
+
+<script "text/javascript">
+
+var data_limit = 10;
+var data = newsWC;
+//var news_data = newsWC;
+//var twitter_data = twitterWC;
+
+/*function check(data, limit) {
+  var sample = data.slice(0,limit);
+  return sample;
+}*/
+
+var test_data = data.slice(0,data_limit);
+var chart = Highcharts.chart('container', {
+    series: [{
+        type: 'wordcloud',
+        data: test_data,
+        name: 'Occurrences'
+    }],
+    title: {
+        text: 'New York Times word count'
+    }
+});
+
+jQuery('#limit').on('change',function(){
+  data_limit = jQuery('#limit').val();
+  var selectedVal = $('input[type="radio"]:checked').val();
+      //chart.series[0].setData(check(data,data_limit));
+    chart.series[0].setData(data.slice(0,data_limit));
+
+})
+
+jQuery('input[name=article]').on('change',function(){
+  var selectedVal = $('input[type="radio"]:checked').val();
+  var content = "";
+  var new_data;
+  if(selectedVal == "nyc"){
+    content= "New York Times word count";
+    data = newsWC;
+
+  }else {
+    content= "Twitter word count";
+    data = twitterWC;
+  }
+  chart.series[0].setData(data.slice(0,data_limit));
+  chart.setTitle({text:content});
+
+})
+//ToDo: Set limit here
+
+</script>
