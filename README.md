@@ -1,5 +1,7 @@
 # hadoop-data-analysis
 
+Part 1 contains just the basic snippets for getting hold of python, the Hadoop project is present under Part 2 and the report of this project can be found Report.docx
+
 ## Steps to run Hadoop:
 
 ### 1. Load data into Hadoop HDFS:
