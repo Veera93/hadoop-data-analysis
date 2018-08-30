@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 import sys
 import nltk
 import string
@@ -17,6 +17,7 @@ def process_text(text):
 	punc = string.punctuation
 	regex = re.compile('[%s]' % re.escape(punc))
 	tokenized_text_without_punc = []
+	# Remove punctuation
 	for token in tokenized_text: 
 		new_token = regex.sub(u'', token)
 		if not new_token == u'':
@@ -27,10 +28,12 @@ def process_text(text):
 	custom_stop_words = ["rt", "http", "could", "one", "ms", "mr", "follow", "amp", "retweet", "hi", "https"]
 	stop_words = stop_words + custom_stop_words
 
+	# Remove stop words
 	for word in tokenized_text_without_punc:
 		if not word in stop_words:
 			tokenized_text_without_stopwords.append(word)
 
+	#Use porter stemmer for stemming
 	porter = PorterStemmer()
 
 	pre_processed_text = []
@@ -51,4 +54,5 @@ for file in sys.stdin:
 			if word in topWords:
 				for neighbour in words:
 	                        	if neighbour != word and neighbour in topWords:
+	                        			#Emit word, neighbour, 1
 	                            		print ('%s,%s\t%s' % (word,neighbour,1))

@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 import sys
 import nltk
 import string
@@ -7,15 +7,15 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 
-
-topWords = ["blockchain", "bitcoin", "crypto", "ico", "hyperledg", "join", "cryptocurr", "token", "ethereum", "ether", "btc", "new", "win", "rippl", "project", "litecoin", "start", "platform", "technolog", "wallet"]
 def process_text(text):
+	# Convert text to lower case
 	text = text.lower()
 	#Tokenizing the input
 	tokenized_text = word_tokenize(text)
 	punc = string.punctuation
 	regex = re.compile('[%s]' % re.escape(punc))
 	tokenized_text_without_punc = []
+	# Remove punctuation
 	for token in tokenized_text: 
 		new_token = regex.sub(u'', token)
 		if not new_token == u'':
@@ -25,11 +25,13 @@ def process_text(text):
 	stop_words = stopwords.words('english')
 	custom_stop_words = ["rt", "http", "could", "one", "ms", "mr", "follow", "amp", "retweet", "hi", "https"]
 	stop_words = stop_words + custom_stop_words
-
+	
+	# Remove stop words
 	for word in tokenized_text_without_punc:
 		if not word in stop_words:
 			tokenized_text_without_stopwords.append(word)
 
+	#Use porter stemmer for stemming
 	porter = PorterStemmer()
 
 	pre_processed_text = []
@@ -39,15 +41,10 @@ def process_text(text):
 	words = [word for word in pre_processed_text if word.isalpha()]
 
 	return words
-
-for file in sys.stdin:
-	lines = file.split("\n")
-	for line in lines:
-		line = line.strip()
-		words = process_text(line)
-		map = set()
-		for word in words:
-			if word in topWords:
-				for neighbour in words:
-	                        	if neighbour != word and neighbour in topWords:
-	                            		print ('%s,%s\t%s' % (word,neighbour,1))
+    
+for line in sys.stdin:
+	#Pre process the words
+	words = process_text(line)
+	for word in words:
+		#Emit key:word, value:1
+		print ('%s\t%s' % (word,1))

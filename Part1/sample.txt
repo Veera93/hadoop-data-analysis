@@ -1,3 +1,0 @@
-adas	3
-sampl	5
-ffadas	1
