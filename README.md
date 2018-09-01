@@ -3,6 +3,10 @@
 ## Aim:
 The goal of the project is to analyze, visualize and infer information on how the topic of interest (blockchain) is featured across various sources. Specific sources considered for this project are New York Times article and Twitter tweets.
 
+## Workflow
+
+![Flow chart](/images/flow_hd.png)
+
 ## Data Collection: (Code folder)
 For collecting twitter data provide the API details and file name as needed in the DataCollectionTwitter.ipynb.
 
