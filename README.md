@@ -87,14 +87,24 @@ Highchart.js is used for data visualization and it requires the output of hadoop
 
 An interactive website to visualize the data processed. The user can select the source of data (NY times and twitter) and can also specify the top of words of interest. This will show a word cloud visualization of the selected parameters. 
 
+#### New York Times
+
 ![Word Cloud 1](/images/Picture1_hd.png)
+
+#### Twitter
 
 ![Word Cloud 2](/images/Picture2_hd.png)
 
 ### Heat Map for Co occurrence: 
 The data for co-occurrence is visualized as a heat map. Similar to the word count, the user can select the source and top N of words.
 
-### You can also view the data visualization in the report.docx
+#### New York Times
+
+![Heat Map 1](/images/Picture3_hd.png)
+
+#### Twitter
+
+![Heat Map 2](/images/Picture4_hd.png)
 
 ## Inference: 
 
